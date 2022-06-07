@@ -1,5 +1,5 @@
 const Users = require("../../Models/Users");
-CLIENT_URL="http://localhost:5000";
+CLIENT_URL="https://lottle-api.herokuapp.com/";
 
 const register = async(req,res,bcrypt,jwt)=>{
     console.log(req.body) ;
