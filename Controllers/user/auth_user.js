@@ -1,5 +1,5 @@
 const Users = require("../../Models/User");
-CLIENT_URL="https://lottle-api.herokuapp.com/";
+CLIENT_URL="https://lottle-api.herokuapp.com";
 const nodemailer = require('nodemailer');
 
 const register = async(req,res,bcrypt,jwt)=>{
@@ -30,9 +30,9 @@ const register = async(req,res,bcrypt,jwt)=>{
                 text : "Welcome to Lottle ! ",
                 html : `
                 <h2>Please click on the given link to activate your account</h2>
-                <a href="${CLIENT_URL}/authentication/${token}">Click Here to verify</a>
+                <a href="${CLIENT_URL}/verifytoken/${token}">Click Here to verify</a>
                 <p>Pls do it within 30 minutes</p>
-                <p>If the above link is not working then browse to ${CLIENT_URL}/authentication/${token} </p>
+                <p>If the above link is not working then browse to ${CLIENT_URL}/verifytoken/${token} </p>
                 `
               }
               let info = transporter.sendMail (mailOptions, (error, info) => {

@@ -4,7 +4,9 @@ const Authentication = require("../Controllers/user/auth_user");
 const jwt=require("jsonwebtoken");
 const bcrypt = require('bcrypt-nodejs');
 
-
+router.get('/' , (req,res)=>{
+    res.json('Hi World') ;
+});
 //For login
 router.post('/login',(req,res)=>{
     Authentication.login(req,res,bcrypt,jwt);
