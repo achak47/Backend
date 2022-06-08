@@ -57,7 +57,7 @@ const login = (req,res,bcrypt,jwt)=>{
         if(bcrypt.compareSync(password , result[0].password))
         {
           const {name} = result[0] ;
-          const api_key = process.env.api_key ;
+          const api_key = process.env.ACTIVATE_API_KEY ;
           const token = jwt.sign ({name, email, password}, api_key, {expiresIn : '60m'});
           res.status(200).json({token}) ;
         }
