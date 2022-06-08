@@ -14,7 +14,7 @@ const cors = require('cors');
 app.use(express.urlencoded({extended:true}));
 app.use(express.json()) ;
 app.use(cors()) ;
-//app.use('/',require('./Router/router_index'));
+app.use('/',require('./Routers/router_user'));
 //End of middlewares
 
 

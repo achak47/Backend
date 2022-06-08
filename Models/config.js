@@ -7,4 +7,4 @@ mongoose.connect(`${process.env.MONGO_PATH}`,{  //connecting the databae
     console.log('Database Connection Succesful !!!');
 }).catch((err)=> console.log(err,"Error in establishing Database."));
 
-module.exports =  {mongoose} ;
+module.exports =  mongoose ;

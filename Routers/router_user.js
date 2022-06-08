@@ -4,9 +4,6 @@ const Authentication = require("../Controllers/user/auth_user");
 const jwt=require("jsonwebtoken");
 const bcrypt = require('bcrypt-nodejs');
 
-router.post('/register',upload.single ('file'), (req,res)=>{
-    Authentication.register(req,res,bcrypt);
-});
 
 //For login
 router.post('/login',(req,res)=>{
@@ -17,6 +14,8 @@ router.get('/verifytoken/:token',(req,res)=>{
 });
 
 //For register
-router.post('/register',upload.single ('file'), (req,res)=>{
-    Authentication.register(req,res,bcrypt);
+router.post('/register', (req,res)=>{
+    Authentication.register(req,res,bcrypt,jwt);
 });
+
+module.exports=router;

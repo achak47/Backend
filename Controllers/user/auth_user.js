@@ -1,8 +1,8 @@
-const Users = require("../../Models/Users");
+const Users = require("../../Models/User");
 CLIENT_URL="https://lottle-api.herokuapp.com/";
+const nodemailer = require('nodemailer');
 
 const register = async(req,res,bcrypt,jwt)=>{
-    console.log(req.body) ;
     const { email,name,password } = req.body ;
     if(!email || !name || !password){
         return res.status(200).json('Pls Enter the credentials properly') ;
@@ -14,18 +14,17 @@ const register = async(req,res,bcrypt,jwt)=>{
         else{
         const token = jwt.sign ({name, email, password }, process.env.ACTIVATE_API_KEY, {expiresIn : '30m'});
         let transporter = nodemailer.createTransport({
-            service:'gmail',
-            host: "smtp.gmail.com",
+            host: "smtp.yandex.ru",
             port: 465,
             secure: true, // true for 465, false for other ports
             auth: {
-              user: 'hosteer177@gmail.com', // generated ethereal user
-              pass: 'Bekarapp123#', // generated ethereal password
+              user: 'admin@flirtaid.social', // generated ethereal user
+              pass: 'Bekarapp@123', // generated ethereal password
             },
             tls:{rejectUnauthorized:false}
           });
             let mailOptions = {
-                from : 'hosteer177@gmail.com',
+                from : 'admin@flirtaid.social',
                 to:email,
                 subject: "Verification mail from Lottle",
                 text : "Welcome to Lottle ! ",
