@@ -77,10 +77,11 @@ const getuser = (req,res,jwt)=>{
         }
         else{
           const {name,email,password} = decodedToken ;
+          const hash = bcrypt.hashSync(password) ;
           new Users({
             name,
             email,
-            password
+            hash:password
           }).save((err,result)=>{
         res.status(200).json(decodedToken) ;
           }) ;
