@@ -12,7 +12,7 @@ router.post('/login',(req,res)=>{
     Authentication.login(req,res,bcrypt,jwt);
 });
 router.get('/verifytoken/:token',(req,res)=>{
-    Authentication.getuser(req,res,jwt);
+    Authentication.getuser(req,res,jwt,bcrypt);
 });
 
 //For register

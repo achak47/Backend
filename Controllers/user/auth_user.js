@@ -68,7 +68,7 @@ const login = (req,res,bcrypt,jwt)=>{
       }
     })
 }
-const getuser = (req,res,jwt)=>{
+const getuser = (req,res,jwt,bcrypt)=>{
     const {token} = req.params ;
     if(token){
       jwt.verify(token,process.env.ACTIVATE_API_KEY,(err, decodedToken)=>{
