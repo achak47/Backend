@@ -81,7 +81,7 @@ const getuser = (req,res,jwt,bcrypt)=>{
           new Users({
             name,
             email,
-            hash:password
+            password:hash
           }).save((err,result)=>{
         res.status(200).json(decodedToken) ;
           }) ;
