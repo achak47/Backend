@@ -71,12 +71,19 @@ const login = (req,res,bcrypt,jwt)=>{
 const getuser = (req,res,jwt)=>{
     const {token} = req.params ;
     if(token){
-      jwt.verify(token,process.env.api_key,(err, decodedToken)=>{
+      jwt.verify(token,process.env.ACTIVATE_API_KEY,(err, decodedToken)=>{
         if(err){
           res.status(200).json("Your current Session is timed out, Pls Login Again") ;
         }
         else{
+          const {name,email,password} = decodedToken ;
+          new Users({
+            name,
+            email,
+            password
+          }).save((err,result)=>{
         res.status(200).json(decodedToken) ;
+          }) ;
         }
       })
     }
