@@ -15,6 +15,7 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.json()) ;
 app.use(cors()) ;
 app.use('/',require('./Routers/router_user'));
+app.use('/admin',require('./Routers/router_admin')) ;
 //End of middlewares
 
 

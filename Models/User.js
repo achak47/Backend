@@ -12,7 +12,11 @@ const schema = new mongoose.Schema({
             unique:true,
         },
         address: String,
-        profile_pic: String 
+        profile_pic: String,
+        favourites:[{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Adoptions'
+        }]
     },{
         timestamps:true
     }
