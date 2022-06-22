@@ -1,4 +1,4 @@
-const Adoptions = require("../../Models/adoptions");
+const Adoptions = require("../../Models/Adoptions");
 const addpet = (req,res)=>{
   const {name,type,gender,age,color,breed,primary_breed,allergies,diseases,disabilities,location,picture,user_id} = req.body ;
   //if(!name || !desc || !location || !picture || !user_id) res.status(400).json("Invalid Credentials") ;

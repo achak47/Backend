@@ -1,4 +1,4 @@
-const adoptions = require("../../Models/adoptions") ;
+const adoptions = require("../../Models/Adoptions") ;
 
 const filterbybreed = (req,res)=>{
   adoptions.find({},(err,result)=>{
