@@ -6,12 +6,14 @@ const filterbybreed = (req,res)=>{
     res.status(200).json(result) ;
   })
 }
+/*
 const filterbylocation = (req,res)=>{
     adoptions.find({},(err,result)=>{
       result.filter(r=>r.location==req.body.location) ;
       res.status(200).json(result) ;
     })
   }
+  */
 const filterbyage = (req,res)=>{
     adoptions.find({},(err,result)=>{
         result.filter(r=>r.age>req.body.minage && r.age<req.body.maxage) ;
