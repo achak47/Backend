@@ -20,7 +20,7 @@ app.use('/admin',require('./Routers/router_admin')) ;
 
 
 
-app.listen(process.env.PORT || 5000 , (err)=> {
+app.listen(process.env.PORT || 5000,'0.0.0.0' , (err)=> {
     if(err){
         console.log("Error in setting up server!");
         return;
