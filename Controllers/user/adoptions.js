@@ -23,7 +23,7 @@ const addpet = (req,res)=>{
 }
 
 const getpet = async(req,res)=>{
-   //const pets = await Adoptions.find({}).populate({path:'user',select:'name'}) ;
+   const pets = await Adoptions.find({}).populate({path:'user',select:'name'}) ;
    /*
     Adoptions.find({},(err,result)=>{
         result.forEach(r=>{
@@ -41,8 +41,8 @@ const getpet = async(req,res)=>{
       const start_time = r.timestamp,end_time = Date.now() ;
 
 const total = new Date(end_time).getTime() -  new Date(start_time).getTime();
-  const days = ((Math.floor((total)/1000))/3600)/24;
-  const months = days/30 ;
+  var days = ((Math.floor((total)/1000))/3600)/24;
+  var months = days/30 ;
   const year = months/12 ;
   months %= 12 ;
   pets.year = year ;
