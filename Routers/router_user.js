@@ -78,6 +78,9 @@ router.post("filter/location",async(req,res)=>{
  router.post("filter/vaccine",async(req,res)=>{
     Filters.filterbyvaccine(req,res) ;
  }) ;
+ router.post('/filter/all',async(req,res)=>{
+     Filters.filterAll(req,res) ;
+ })
 
  //
 

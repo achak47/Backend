@@ -27,9 +27,11 @@ const filterbyvaccine = (req,res)=>{
 const filterAll = (req,res)=>{
   const { breed,location,vaccine } = req.body ;
   adoptions.find({},(err,result)=>{
-    result.filter(r=> breed.includes(r.breed) || r.location == location) ;
+    result.filter(r=> breed.includes(r.breed)) ;
     if(vaccine) result.filter(r=>r.isVaccinated ==true) ;
-    return result ;
+    console.log(result) ;
+    return res.status(200).json(result.filter(r=> breed.includes(r.breed) && (vaccine?r.isVaccinated==true:r.isVaccinated==false)
+    && (location==""?r.location.length>0:r.location == location ))) ;
   })
 }
 module.exports = {
