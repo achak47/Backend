@@ -1,13 +1,13 @@
 const Adoptions = require("../../Models/Adoptions");
 const addpet = (req,res)=>{
-  const {name,type,gender,age,color,breed,primary_breed,allergies,diseases,disabilities,location,picture,user_id} = req.body ;
+  const {name,type,gender,age,colour,breed,primary_breed,allergies,diseases,disabilities,location,picture,user_id} = req.body ;
   //if(!name || !desc || !location || !picture || !user_id) res.status(400).json("Invalid Credentials") ;
   new Adoptions({
     name,
     type,
     gender,
     age,
-    color,
+    colour,
     breed,
     primary_breed,
     allergies,
@@ -21,9 +21,25 @@ const addpet = (req,res)=>{
     res.status(200).json("Your request for adoption posted succesfully !!!") ;
       }) ;
 }
+function modifypets(pets){
+  pets.forEach(r=>{
+    let desc = r.name+(r.name?" a ":" A ")+r.age+" years old "+r.color+" "+r.breed+" in "+r.location ;
+    r.desc = desc ;
+    const start_time = r.timestamp,end_time = Date.now() ;
 
+const total = new Date(end_time).getTime() -  new Date(start_time).getTime();
+var days = ((Math.floor((total)/1000))/3600)/24;
+var months = days/30 ;
+const year = months/12 ;
+months %= 12 ;
+r.year = year ;
+r.months = months ;
+ console.log(desc) ;
+  })    ;
+  return pets ;
+}
 const getpet = async(req,res)=>{
-   const pets = await Adoptions.find({}).populate({path:'user',select:'name'}) ;
+   var pets = await Adoptions.find({}).populate({path:'user',select:'name'}) ;
    /*
     Adoptions.find({},(err,result)=>{
         result.forEach(r=>{
@@ -35,20 +51,8 @@ const getpet = async(req,res)=>{
         }) ;
         res.status(200).json(result) ;
     }) */
-    pets.forEach(r=>{
-      let desc = r.name+(r.name?" a ":" A ")+r.age+" years old "+r.color+" "+r.breed+" in "+r.location ;
-      r.desc = desc ;
-      const start_time = r.timestamp,end_time = Date.now() ;
-
-const total = new Date(end_time).getTime() -  new Date(start_time).getTime();
-  var days = ((Math.floor((total)/1000))/3600)/24;
-  var months = days/30 ;
-  const year = months/12 ;
-  months %= 12 ;
-  pets.year = year ;
-  pets.months = months ;
-    })
-    res.status(200).json(pets) ;
+    //var retpets = await modifypets(pets) ;
+     res.status(200).json(pets) ;
 }
 
 module.exports = {
