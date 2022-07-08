@@ -38,8 +38,12 @@ r.months = months ;
   })    ;
   return pets ;
 }
-const getpet = async(req,res)=>{
-   var pets = await Adoptions.find({}).populate({path:'user',select:'name'}) ;
+const getpet = (req,res)=>{
+    Adoptions.find({}).populate({path:'user',select:'name'}).then((result)=>{
+      res.status(200).json(result) ;
+   }).catch((err)=>{
+    res.status(400).json(err) ;
+   }) ;
    /*
     Adoptions.find({},(err,result)=>{
         result.forEach(r=>{
@@ -52,7 +56,6 @@ const getpet = async(req,res)=>{
         res.status(200).json(result) ;
     }) */
     //var retpets = await modifypets(pets) ;
-     res.status(200).json(pets) ;
 }
 
 module.exports = {
