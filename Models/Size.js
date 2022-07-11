@@ -1,12 +1,9 @@
 const mongoose = require('mongoose') ;
 const schema = new mongoose.Schema({
-    price: String,
+    price: Number,
     size: String ,
     specefication: String ,
-    product :{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Products'
-    }
+    image : String
 }) ;
 
 module.exports=mongoose.model('Size',schema);

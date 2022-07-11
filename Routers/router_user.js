@@ -4,6 +4,7 @@ const Authentication = require("../Controllers/user/auth_user");
 const Adoption = require("../Controllers/user/adoptions") ;
 const Favourites = require("../Controllers/user/favourites") ;
 const Filters = require("../Controllers/user/filter") ;
+const Pdtfilter = require("../Controllers/user/productfilter") ;
 const conversation = require("../Controllers/user/conversation") ;
 const message = require("../Controllers/user/message") ;
 
@@ -82,6 +83,9 @@ router.post("filter/location",async(req,res)=>{
      Filters.filterAll(req,res) ;
  })
 
- //
+ //product filters
+router.post('/filter/products',(req,res)=>{
+    Pdtfilter.filterproducts(req,res) ;
+})
 
 module.exports=router;

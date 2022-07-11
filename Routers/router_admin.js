@@ -24,9 +24,7 @@ router.post("/addproduct",Middleware.checkAdmin,(req,res)=>{
 router.post("/addsize",Middleware.checkAdmin,(req,res)=>{
     Addproduct.addsize(req,res) ;
 })
-router.post("/getsizebyproduct",(req,res)=>{
-    Getproduct.getsizebyproduct(req,res) ;
-})
+
 
 //getting 
 router.get("/getbreed",(req,res)=>{
@@ -52,5 +50,9 @@ router.post("/deletedisease",Middleware.checkAdmin,(req,res)=>{
 router.post("/deleteallergy",Middleware.checkAdmin,(req,res)=>{
     Delete.deleteallergy(req,res) ;
 })
+
+
+
+
 
 module.exports=router;
