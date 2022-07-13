@@ -95,11 +95,15 @@ const getuser = (req,res,jwt,bcrypt)=>{
 }
 
 const registeremail = (req,res)=>{
-   const {email,mobile} = req.body ;
+   let {email,mobile} = req.body ;
+   if(email) mobile = undefined ;
+   if(mobile) email = undefined ;
    new Email({
        email,
        mobile
    }).save((err,result)=>{
+    if(err) res.status(200).json((email?"Email":"Phone")+" Already added !") ;
+    else
     res.status(200).json("Email succesfully added , stay tuned with us , you will be notified soon") ;
    }) ;
 }
