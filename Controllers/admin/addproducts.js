@@ -26,7 +26,7 @@ const addproduct = (req,res)=>{
 
 const addsize = async(req,res)=>{
     const {price,size,specefication,product,image} = req.body ;
-    const pdt = await Product.findOne({_id:product}) ;
+    const pdt = await Product.findOne({name:product}) ;
     new Size({
         price ,
         size ,

@@ -17,7 +17,7 @@ const add_diseases = async(req,res)=>{
     const { diseases } = req.body ;
     Diseases.insertMany(diseases).then(
         function(){
-            res.status(200).json("Breeds added succesfully") ;
+            res.status(200).json("Diseases added succesfully") ;
         }
     ).catch((err)=>{
         res.status(400).json(err) ;
@@ -28,7 +28,7 @@ const add_diseases = async(req,res)=>{
     const { allergies } = req.body ;
     Allergies.insertMany(allergies).then(
         function(){
-            res.status(200).json("Breeds added succesfully") ;
+            res.status(200).json("Allergies added succesfully") ;
         }
     ).catch((err)=>{
         res.status(400).json(err) ;
