@@ -31,7 +31,8 @@ const addsize = async(req,res)=>{
         price ,
         size ,
         specefication ,
-        image
+        image ,
+        product
     }).save((err,result)=>{
         //if(err) res.status(400).json(err) ;
         pdt.sizes.push(result._id) ;

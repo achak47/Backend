@@ -16,6 +16,14 @@ const schema = new mongoose.Schema({
         favourites:[{
             type:mongoose.Schema.Types.ObjectId,
             ref:'Adoptions'
+        }] , 
+        address:[{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Address'  
+        }],
+        cart:[{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Size'  
         }]
     },{
         timestamps:true

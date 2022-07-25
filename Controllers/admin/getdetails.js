@@ -1,6 +1,7 @@
 const Breeds = require("../../Models/Breeds");
 const Diseases = require("../../Models/Diseases");
 const Allergies = require("../../Models/Allergies");
+const Cache = require("../../Models/Cache") ;
 
 const getbreed = (req,res)=>{
    const {type} = req.query ;
@@ -26,8 +27,16 @@ const getallergies = (req,res)=>{
     }) 
 }
 
+const getbreedsfromcache = (req,res)=>{
+    Cache.findOne({name:"breed"},(err,result)=>{
+        if(err) res.status(400).json(err) ;
+        res.status(200).json(result) ; 
+    })
+}
+
 module.exports = {
     getbreed ,
     get_diseases ,
-    getallergies
+    getallergies ,
+    getbreedsfromcache
 }

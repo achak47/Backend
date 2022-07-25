@@ -7,6 +7,7 @@ const Filters = require("../Controllers/user/filter") ;
 const Pdtfilter = require("../Controllers/user/productfilter") ;
 const conversation = require("../Controllers/user/conversation") ;
 const message = require("../Controllers/user/message") ;
+const ecomm = require("../Controllers/user/ecommerce") ;
 
 const jwt=require("jsonwebtoken");
 const bcrypt = require('bcrypt-nodejs');
@@ -88,4 +89,38 @@ router.post('/filter/products',(req,res)=>{
     Pdtfilter.filterproducts(req,res) ;
 })
 
+//ecommerce
+router.get('/ecom/getproducts',(req,res)=>{
+    ecomm.getproduct(req,res) ;
+}) ;
+router.post('/ecom/filladdress',(req,res)=>{
+    ecomm.get_address(req,res) ;
+}) ;
+router.post('/ecom/addtocart',(req,res)=>{
+    ecomm.add_tocart(req,res) ;
+})
+router.post('/ecom/viewcart',(req,res)=>{
+    ecomm.view_cart(req,res) ;
+})
+router.post('/ecom/quantitycheck',(req,res)=>{
+    ecomm.quantity_check(req,res) ;
+})
+router.post('/ecom/addfavourite',(req,res)=>{
+    ecomm.addfavourites(req,res) ;
+})
+router.post('/ecom/viewfavourite',(req,res)=>{
+    ecomm.viewfavourites(req,res) ;
+})
+router.post('/ecom/removecart',(req,res)=>{
+    ecomm.remove_cart(req,res) ;
+})
+router.post('/ecom/removefavourite',(req,res)=>{
+    ecomm.removefavourites(req,res) ;
+})
+router.post('/ecom/move/favouritetocart',(req,res)=>{
+    ecomm.movefromfavouritetocart(req,res) ;
+})
+router.post('/ecom/move/carttofavourite',(req,res)=>{
+    ecomm.movefromcarttofavourites(req,res) ;
+})
 module.exports=router;

@@ -6,4 +6,4 @@ const schema = new mongoose.Schema({
    values:[{ type: String, unique: true }]
 }) ;
 
-module.exports = mongoose.model('Breedz',schema) ;
+module.exports = mongoose.model('Cache',schema) ;
