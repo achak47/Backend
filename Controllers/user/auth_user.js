@@ -101,7 +101,7 @@ const registeremail = (req,res)=>{
    }).save((err,result)=>{
     if(err) res.status(200).json((email?"Email":"Phone")+" Already added !") ;
     else
-    res.status(200).json("Email succesfully added , stay tuned with us , you will be notified soon") ;
+    res.status(200).json("REGISTERED SUCCESFULLY") ;
    }) ;
 }
 
