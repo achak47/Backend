@@ -39,6 +39,9 @@ router.get("/getallergies",(req,res)=>{
 router.get("/getproduct",(req,res)=>{
     Getproduct.getproducts(req,res) ;
 })
+router.get("/getsizes",(req,res)=>{
+    Getproduct.getsizes(req,res) ;
+})
 
 //deleting 
 router.post("/deletebreed",Middleware.checkAdmin,(req,res)=>{

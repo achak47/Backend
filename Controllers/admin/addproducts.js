@@ -25,21 +25,23 @@ const addproduct = (req,res)=>{
 }
 
 const addsize = async(req,res)=>{
-    const {price,size,specefication,product,image} = req.body ;
+    const {price,size,specefication,product,image,qty} = req.body ;
     const pdt = await Product.findOne({name:product}) ;
-    new Size({
-        price ,
-        size ,
-        specefication ,
-        image ,
-        product
-    }).save((err,result)=>{
+    console.log(pdt)
+    s  = await Size.create({
+        "price":price ,
+        "size":size ,
+        "specefication":specefication ,
+        "image":image ,
+        "product":pdt._id,
+        "quantity":qty
+    })
         //if(err) res.status(400).json(err) ;
-        pdt.sizes.push(result._id) ;
+        console.log(s)
+        pdt.sizes.push(s._id) ;
         pdt.save((err,result)=>{
             res.status(200).json("Size of Product added succesfully") ;
         })
-    })
 }
 
 module.exports = {

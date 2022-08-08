@@ -11,7 +11,7 @@ const schema = new mongoose.Schema({
             type:String,
             unique:true,
         },
-        address: String,
+        //address: String,
         profile_pic: String,
         favourites:[{
             type:mongoose.Schema.Types.ObjectId,
