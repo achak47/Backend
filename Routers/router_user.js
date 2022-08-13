@@ -8,6 +8,7 @@ const Pdtfilter = require("../Controllers/user/productfilter") ;
 const conversation = require("../Controllers/user/conversation") ;
 const message = require("../Controllers/user/message") ;
 const ecomm = require("../Controllers/user/ecommerce") ;
+const payment = require("../Controllers/user/payment")
 
 const jwt=require("jsonwebtoken");
 const bcrypt = require('bcrypt-nodejs');
@@ -122,5 +123,10 @@ router.post('/ecom/move/favouritetocart',(req,res)=>{
 })
 router.post('/ecom/move/carttofavourite',(req,res)=>{
     ecomm.movefromcarttofavourites(req,res) ;
+})
+
+//payments
+router.post('/ecom/onpayment',(req,res)=>{
+   payment.pay_order(req,res) ;
 })
 module.exports=router;

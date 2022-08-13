@@ -6,7 +6,8 @@ const Getadmin = require("../Controllers/admin/getdetails") ;
 const Addproduct = require("../Controllers/admin/addproducts") ;
 const Getproduct = require("../Controllers/admin/getproduct") ;
 const Middleware = require("../Utils/middlewares") ;
-const Delete = require("../Controllers/admin/delete")
+const Delete = require("../Controllers/admin/delete") ;
+const Orders = require("../Controllers/admin/orders")
 
 //adding 
 router.post("/addbreed",Middleware.checkAdmin,(req,res)=>{
@@ -42,6 +43,9 @@ router.get("/getproduct",(req,res)=>{
 router.get("/getsizes",(req,res)=>{
     Getproduct.getsizes(req,res) ;
 })
+router.get("/getsizebyproduct/:product",(req,res)=>{
+    Getproduct.getsizebyproduct(req,res) ;
+})
 
 //deleting 
 router.post("/deletebreed",Middleware.checkAdmin,(req,res)=>{
@@ -54,6 +58,13 @@ router.post("/deleteallergy",Middleware.checkAdmin,(req,res)=>{
     Delete.deleteallergy(req,res) ;
 })
 
+//orders
+router.get('/getorders',(req,res)=>{
+    Orders.getorders(req,res) ;
+})
+router.get('/getordersbylist',(req,res)=>{
+    Orders.getorderlist(req,res) ;
+})
 
 
 

@@ -1,5 +1,5 @@
+const Razorpay = require('razorpay');
 const Orders = require("../../Models/Orders");
-import Razorpay from 'razorpay'
 
 const get_key = (req,res)=>{
     res.status(200).json({key:process.env.RAZORPAY_KEY_ID}) ;
@@ -26,12 +26,11 @@ const create_order = async(req,res)=>{
 
 const pay_order = async(req,res)=>{
   try {
-    const { amount, razorpayPaymentId, razorpayOrderId, razorpaySignature,product } = req.body;
+    const { amount, razorpayPaymentId, razorpayOrderId, razorpaySignature,product,user } = req.body;
     const newOrder = new Orders({
       user,
       product,
       amount,
-      quantity,
       status:"Pending",
       isPaid:true ,
       razorpay: {

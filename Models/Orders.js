@@ -1,5 +1,5 @@
 const mongoose = require('mongoose') ;
-const schema = ({
+const schema = new mongoose.Schema({
   product:[{product:{
     type:mongoose.Schema.Types.ObjectId,
     ref:'Size' 
@@ -7,7 +7,6 @@ const schema = ({
   quantity: Number
  }],
   amount:Number ,
-  quantity: Number ,
   status:String ,
   user : {
     type:mongoose.Schema.Types.ObjectId,
@@ -20,7 +19,7 @@ razorpay: {
   signature: String 
 }
 },{
-  timestamp:true
+  timestamps:true
 })
 
 module.exports = mongoose.model('Orders',schema) ;

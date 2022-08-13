@@ -7,9 +7,9 @@ const getproducts = async(req,res)=>{
 }
 
 const getsizebyproduct = async(req,res)=>{
-    const {product} = req.body ;
-    const pdt = await Product.findOne({name:product}) ;
-    const sizes = await Size.find({product:pdt._id}) ;
+    const {product} = req.params ;
+    const pdt = await Product.findOne({name:product}).populate({path:'sizes'}) ;
+    res.status(200).json(pdt.sizes)
 }
 
 const getsizes = async(req,res)=>{
