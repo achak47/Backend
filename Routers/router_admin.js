@@ -65,6 +65,9 @@ router.get('/getorders',(req,res)=>{
 router.get('/getordersbylist',(req,res)=>{
     Orders.getorderlist(req,res) ;
 })
+router.get('/getproductlist',(req,res)=>{
+    Orders.getproduct(req,res) ;
+})
 
 
 

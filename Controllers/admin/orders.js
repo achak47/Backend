@@ -1,5 +1,5 @@
 const Orders = require("../../Models/Orders");
-
+const Product = require("../../Models/Product");
 const addorder = (req,res)=>{
     const {user,product,amount,quantity,status} = req.body ;
     new Orders({
@@ -45,22 +45,12 @@ const getorderlist = async(req,res)=>{
     .populate({path:'product.product',select:'price product quantity'}) ;
     const orderlist = orders.map(o=>{
      const sublist = o.product.map(p=>{
-        p['status'] = o.status ;
-        p['email'] = o.user.email ;
-        p['user_id'] = o.user._id ;
-        p['isPaid'] = o.isPaid ;
-        p['createdAt'] = o.createdAt ;
-        p['_id'] = o._id ;
-        p['totalamount'] = o.amount ;
-        p['orderId'] = o.razorpay.orderId ;
-        p['paymentId'] = o.razorpay.paymentId ;
-        p['signature'] = o.razorpay.signature ;
         return {
         'status' :  o.status ,
         'email': o.user.email ,
         'user_id': o.user._id ,
         'isPaid': o.isPaid ,
-        'createdAt': o.createdAt ,
+        'created_At': o.createdAt ,
         '_id': o._id ,
         'totalamount': o.amount ,
         'orderId': o.razorpay.orderId ,
@@ -78,9 +68,38 @@ const getorderlist = async(req,res)=>{
     res.status(200).json(orderlist.flat()) ;
 }
 
+const getproduct = async(req,res)=>{
+    const pdt = await Product.find({}).populate({path:'sizes',select:'_id name price'})
+    const products = pdt.map(p=>{
+       
+        const sizes = p.sizes.map(m=>{
+          return "{ id: "+m._id+" , size: "+m.size+" , price:"+m.price+" }"
+        })
+        return {
+        "_id": p._id,
+        "name": p.name,
+        "brand": p.brand,
+        "animal_type": p.animal_type.toString(),
+        "foodform": p.foodform,
+        "specialneeds": p.specialneeds,
+        "lifestage": p.lifestage.toString(),
+        "breedsize": p.breedsize.toString(),
+        "flavours": p.flavours,
+        "desc": p.desc,
+        "image": p.image,
+        "rating": p.rating.$numberDecimal,
+        "details": p.details.toString(),
+        "sizes": sizes.toString(),
+        "createdAt": p.createdAt
+        } ;
+    }) 
+    res.status(200).json(products) ;
+  }
+
 module.exports = {
     addorder ,
     getorders ,
     shiporder,
-    getorderlist
+    getorderlist ,
+    getproduct
 }
