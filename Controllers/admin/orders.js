@@ -69,7 +69,7 @@ const getorderlist = async(req,res)=>{
 }
 
 const getproduct = async(req,res)=>{
-    const pdt = await Product.find({}).populate({path:'sizes',select:'_id name price'})
+    const pdt = await Product.find({}).populate({path:'sizes',select:'_id size price'})
     const products = pdt.map(p=>{
        
         const sizes = p.sizes.map(m=>{
