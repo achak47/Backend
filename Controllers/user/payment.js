@@ -26,11 +26,12 @@ const create_order = async(req,res)=>{
 
 const pay_order = async(req,res)=>{
   try {
-    const { amount, razorpayPaymentId, razorpayOrderId, razorpaySignature,product,user } = req.body;
+    const { amount, razorpayPaymentId, razorpayOrderId, razorpaySignature,product,user,address } = req.body;
     const newOrder = new Orders({
       user,
       product,
       amount,
+      address,
       status:"Pending",
       isPaid:true ,
       razorpay: {

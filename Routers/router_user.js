@@ -95,7 +95,7 @@ router.get('/ecom/getproducts',(req,res)=>{
     ecomm.getproduct(req,res) ;
 }) ;
 router.post('/ecom/filladdress',(req,res)=>{
-    ecomm.get_address(req,res) ;
+    ecomm.set_address(req,res) ;
 }) ;
 router.post('/ecom/addtocart',(req,res)=>{
     ecomm.add_tocart(req,res) ;

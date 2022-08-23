@@ -46,6 +46,9 @@ router.get("/getsizes",(req,res)=>{
 router.get("/getsizebyproduct/:product",(req,res)=>{
     Getproduct.getsizebyproduct(req,res) ;
 })
+router.post("/getproductname",(req,res)=>{
+    Getproduct.getproductname(req,res) ;
+})
 
 //deleting 
 router.post("/deletebreed",Middleware.checkAdmin,(req,res)=>{
@@ -68,7 +71,9 @@ router.get('/getordersbylist',(req,res)=>{
 router.get('/getproductlist',(req,res)=>{
     Orders.getproduct(req,res) ;
 })
-
+router.post('/shiporder',(req,res)=>{
+    Orders.shiporder(req,res) ;
+})
 
 
 

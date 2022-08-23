@@ -29,8 +29,14 @@ const getsizes = async(req,res)=>{
     res.status(200).json(updated)
 }
 
+const getproductname = async(req,res)=>{
+  const {product} = req.body ;
+  const pdt = await Product.findById(product) ;
+  res.status(200).json(pdt.name) ;
+} 
 module.exports = {
     getproducts ,
     getsizebyproduct ,
-    getsizes
+    getsizes ,
+    getproductname
 }

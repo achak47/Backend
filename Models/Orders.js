@@ -4,20 +4,25 @@ const schema = new mongoose.Schema({
     type:mongoose.Schema.Types.ObjectId,
     ref:'Size' 
   },
-  quantity: Number
+  quantity: Number,
+  status: String
  }],
   amount:Number ,
-  status:String ,
   user : {
     type:mongoose.Schema.Types.ObjectId,
     ref:'Users'
 } ,
+address : {
+  type:mongoose.Schema.Types.ObjectId,
+  ref:'Address'
+},
 isPaid: Boolean ,
 razorpay: {
   orderId: String ,
   paymentId: String ,
   signature: String 
-}
+},
+date:String
 },{
   timestamps:true
 })

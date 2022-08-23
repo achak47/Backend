@@ -1,5 +1,7 @@
 const Orders = require("../../Models/Orders");
 const Product = require("../../Models/Product");
+const nodemailer = require('nodemailer');
+const Size = require("../../Models/Size")
 const addorder = (req,res)=>{
     const {user,product,amount,quantity,status} = req.body ;
     new Orders({
@@ -19,8 +21,9 @@ const addorder = (req,res)=>{
 const getorders = async(req,res)=>{
     let orders = await Orders.find({})
     .populate({path:'user',select:'email phone'})
-    .populate({path:'product.product',select:'price product quantity'}) ;
-    /* Testing without adding address at first 
+    .populate({path:'product.product',select:'_id price quantity size',populate:{path:'product',select:'name _id'}})
+    .populate({path:"address"}) ;
+    /* 
     orders = orders.map(o =>{
         o.product = o.product.map(p=> p.populate({path:'product'}))
     }) */
@@ -28,15 +31,59 @@ const getorders = async(req,res)=>{
 }
 
 const shiporder = async(req,res)=>{
-    const {order} = req.body ;
-    const o = await Orders.findById({id:order}) 
-    o.status = "Shipped" ;
+    const {orders,orderid,names,email,date} = req.body ;
+    const o = await Orders.findById(orderid)
+    console.log(orders,orderid,names,email,date) ;
+    o.date = date ;
+    o.product.forEach(async(p)=>{
+        if(orders.includes(p.product.toString())){
+            console.log(p.product.toString(),orders[0])
+            p.status = "Shipped"
+            await Size.updateOne({_id :p.product },{$inc: {quantity: -1*p.quantity}})
+        }
+    }) 
     o.save((err,result)=>{
         if(err) res.status(400).json(err) ;
         else{
-            res.status(200).json("Order Shipped Succesfully !!!") ;
+            //await Size.updateMany({_id :{ $in: orders } },{$inc: {quantity: -1*}}, {multi: true})
+            let transporter = nodemailer.createTransport({
+                host: "smtp.yandex.ru",
+                port: 465,
+                secure: true, // true for 465, false for other ports
+                auth: {
+                  user: 'admin@flirtaid.social', // generated ethereal user
+                  pass: 'Bekarapp@123', // generated ethereal password
+                },
+                tls:{rejectUnauthorized:false}
+              });
+                let mailOptions = {
+                    from : 'admin@flirtaid.social',
+                    to:email,
+                    subject: "Product dispatched",
+                    text : "This is in response to your order ",
+                    html : `
+                    <h2>Your order has been dispatched</h2>
+                    <p>
+                    Your order(s) ${names.map(n=> n.size+" "+n.name)} is dispatched and will be shipped to you by ${date}
+                    </p>
+                    `
+                  }
+                  let info = transporter.sendMail (mailOptions, (error, info) => {
+                    if(error) {
+                      console.log (error);
+                      res.status(500).json ({yo : 'error'});
+                    }else {
+                      console.log ('Message sent : ' + info.response);
+                      res.status(200).json("Order Shipped Succesfully !!!") ;
+                    };
+                    return res.end();
+                })
         }   
-    })
+    }) 
+    /*
+    await o.save() ;
+    res.status(200).json("Shipped Succesfully")
+    */
 }
 
 const getorderlist = async(req,res)=>{
@@ -59,7 +106,8 @@ const getorderlist = async(req,res)=>{
         'size_id':p.product._id,
         'product_id':p.product.product,
         'price':p.product.price,
-        'quantity':p.product.quantity
+        'quantity':p.product.quantity,
+        'date':o.date?o.date:""
         } ;
      })
      return sublist ;
@@ -95,11 +143,11 @@ const getproduct = async(req,res)=>{
     }) 
     res.status(200).json(products) ;
   }
-
 module.exports = {
     addorder ,
     getorders ,
     shiporder,
     getorderlist ,
-    getproduct
+    getproduct ,
+    shiporder
 }

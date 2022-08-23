@@ -10,9 +10,9 @@ const getproduct = (req,res)=>{
   res.status(400).json(err) ;
  }) ;
 }
-const get_address = async(req,res) =>{
+const set_address = async(req,res) =>{
     const {city,pin,house_no,apartment,landmark,street,area,user} = req.body ;
-    const users = await User.findById({id:user}) ;
+    const users = await User.findById(user) ;
     new Address({
      city,
      pin,
@@ -22,11 +22,12 @@ const get_address = async(req,res) =>{
      street,
      area,
      user
-    }).save((err,result)=>{
+    }).save(async(err,result)=>{
         if(err) res.status(400).json(err) ;
         else{
-            res.status(200).json("Address added succesfully !!!") ;
             users.address.push(result._id) ;
+            await users.save() ;
+            res.status(200).json("Address added succesfully !!!") ;
         } 
     })
 }
@@ -106,7 +107,7 @@ const movefromcarttofavourites = (req,res)=>{
 }
 module.exports = {
     getproduct ,
-    get_address ,
+    set_address ,
     add_tocart ,
     view_cart ,
     quantity_check ,
