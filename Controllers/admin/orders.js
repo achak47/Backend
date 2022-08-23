@@ -107,7 +107,9 @@ const getorderlist = async(req,res)=>{
         'product_id':p.product.product,
         'price':p.product.price,
         'quantity':p.product.quantity,
-        'date':o.date?o.date:""
+        'date':o.date?o.date:"",
+        'status': p.status ,
+        'ordered quantity':p.quantity
         } ;
      })
      return sublist ;
