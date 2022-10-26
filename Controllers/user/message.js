@@ -6,6 +6,7 @@ const addmessages = async(req,res)=>{
       const saveMessage = await newMessage.save() ;
       res.status(200).json(saveMessage) ;
     }catch(err){
+        console.log(err)
          res.status(500).json(err) ;
     }
 }

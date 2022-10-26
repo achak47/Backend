@@ -18,7 +18,8 @@ const getuserconversation = async(req,res)=>{
     try{
         const conversation = await Conversation.find({
             members: {$in: [req.params.userId]}
-        }) ;
+        }).populate({path:'members',select:'name email phone profile_pic'})
+        .populate({path:'pet'}) ;
       res.status(200).json(conversation) ;
     }
     catch(err){

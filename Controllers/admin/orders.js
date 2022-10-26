@@ -1,7 +1,9 @@
 const Orders = require("../../Models/Orders");
 const Product = require("../../Models/Product");
 const nodemailer = require('nodemailer');
-const Size = require("../../Models/Size")
+const Size = require("../../Models/Size");
+const Cancel = require("../../Models/Cancel");
+const Users = require("../../Models/User");
 const addorder = (req,res)=>{
     const {user,product,amount,quantity,status} = req.body ;
     new Orders({
@@ -31,10 +33,12 @@ const getorders = async(req,res)=>{
 }
 
 const shiporder = async(req,res)=>{
-    const {orders,orderid,names,email,date} = req.body ;
+    const {orders,orderid,names,email,date,user} = req.body ;
     const o = await Orders.findById(orderid)
+    const u = await Users.findById(user)
     console.log(orders,orderid,names,email,date) ;
     o.date = date ;
+    
     o.product.forEach(async(p)=>{
         if(orders.includes(p.product.toString())){
             console.log(p.product.toString(),orders[0])
@@ -42,6 +46,8 @@ const shiporder = async(req,res)=>{
             await Size.updateOne({_id :p.product },{$inc: {quantity: -1*p.quantity}})
         }
     }) 
+    u.orders.push(...orders) ;
+    await u.save()
     o.save((err,result)=>{
         if(err) res.status(400).json(err) ;
         else{
@@ -145,11 +151,48 @@ const getproduct = async(req,res)=>{
     }) 
     res.status(200).json(products) ;
   }
+const get_cancellations = async(req,res)=>{
+    const c = await Cancel.find({}).populate({path:'order'}) ;
+    const can = c.map(o=>{
+        const size = o.order.product.filter(m=>{
+          return (m.product==o.size) ;
+        })
+        return {
+            "cancel":o._id ,
+            "user":o.user ,
+            "product":o.product ,
+            "size":o.size ,
+            "status":size[0].status ,
+            "order_id":o.order._id
+        } ;
+    })
+    res.status(200).json(can) ;
+}
+
+const approve_cancellation = async(req,res)=>{
+    const {order,size,cancel} = req.body ;
+    let o = await Orders.findById({_id:order}) ;
+    o.product.filter(p=>{
+        return p.product != size ;
+    })
+    o.save((err,result)=>{
+        if(err) res.status(400).json(err) ;
+        else{
+            Cancel.deleteOne({_id:cancel}).then(function(){
+                res.status(200).json("Order is cancelled Succesfully !!!") ;
+             }).catch(function(error){
+                console.log(error); 
+             });
+        } 
+    })
+}
 module.exports = {
     addorder ,
     getorders ,
     shiporder,
     getorderlist ,
     getproduct ,
-    shiporder
+    shiporder ,
+    get_cancellations ,
+    approve_cancellation
 }

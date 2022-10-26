@@ -2,6 +2,8 @@ const Product = require("../../Models/Product");
 const Size = require("../../Models/Size");
 const Address = require("../../Models/Address");
 const User = require("../../Models/User");
+const Orders = require("../../Models/Orders");
+const Cancel = require("../../Models/Cancel");
 
 const getproduct = (req,res)=>{
   Product.find({}).populate({path:'sizes'}).then((result)=>{
@@ -10,18 +12,21 @@ const getproduct = (req,res)=>{
   res.status(400).json(err) ;
  }) ;
 }
+const getpdtbyid = async(req,res)=>{
+    const {id} = req.body ;
+    const pdt = await Product.findById(id).populate({path:'sizes'}) ;
+    res.status(200).json(pdt) ;
+}
 const set_address = async(req,res) =>{
-    const {city,pin,house_no,apartment,landmark,street,area,user} = req.body ;
+    const {city,pin,line1,line2,user} = req.body ;
     const users = await User.findById(user) ;
     new Address({
-     city,
-     pin,
-     house_no,
-     apartment,
-     landmark,
-     street,
-     area,
-     user
+        city,
+        pin,
+        line1,
+        line2,
+        phone : users.phone ,
+        user
     }).save(async(err,result)=>{
         if(err) res.status(400).json(err) ;
         else{
@@ -31,71 +36,63 @@ const set_address = async(req,res) =>{
         } 
     })
 }
-const quantity_check = (req,res)=>{
+const quantity_check = async(req,res)=>{
    const {item,quantity} = req.body ;
-   Size.findById({id:item},(err,result)=>{
+   const result = await Size.findById(item)
     if(result.quantity<quantity) res.status(200).json("Insufficient Quantity") ;
     else{
-          return ;
+          return res.status(200).json("OK") ; 
     }
-   })
 }
 
-const add_tocart = (req,res)=>{
+const add_tocart = async(req,res)=>{
     const {user,item} = req.body ;
-    User.findByIdAndUpdate({user}, {$push: {cart: item}},
-        (err,result)=>{
-            if(err) res.status(200).json(err) ;
-            else res.status(200).json("Item Added to your favourites") ;
-        })
+    const users = await User.findByIdAndUpdate(user) ;
+    users.cart.push(item) ;
+    await users.save() ;
+    res.status(200).json("Item Added to your favourites") ;
 }
 
 const view_cart = async(req,res)=>{
     const {cart} = req.body ;
-    let pdts = await Size.find({}) ;
-    pdts = pdts.filter(item => item._id in cart) ;
+    let pdts = await Size.find({ '_id': { $in: cart } }) ;
     return res.status(200).json(pdts) ;
 }
 
-const remove_cart = (req,res)=>{
+const remove_cart = async(req,res)=>{
     const {user,item} = req.body ;
-     User.findByIdAndUpdate({user},{$pop:{cart:item}},
-        (err,result)=>{
-            if(err) res.status(200).json(err) ;
-            else res.status(200).json("Item Removed from your cart") ;
-        })
+    let u = await User.findById(user) ;
+    u.cart.filter(id=> id != item) ;
+    await u.save() ;
+    res.status(200).json("Item Removed from your cart") ;
 }
 
-const addfavourites = (req,res)=>{
+const addfavourites = async(req,res)=>{
     const {user,item} = req.body ;
-    User.findByIdAndUpdate({user}, {$push: {favourites: item}},
-        (err,result)=>{
-            if(err) res.status(200).json(err) ;
-            else res.status(200).json("Item Added to your favourites") ;
-        }) 
+    let u = await User.findById(user) ;
+    u.favourites.push(item) ;
+    res.status(200).json("Item Added to your favourites") ;
 }
 const viewfavourites = async(req,res)=>{
     const {favourites} = req.body ;
-    let pdts = await Size.find({}) ;
-    pdts = pdts.filter(item => item._id in favourites) ;
+    let pdts = await Size.find({ '_id': { $in: favourites } }) ; ;
     return res.status(200).json(pdts) ;  
 }
 const removefavourites = async(req,res)=>{
     const {user,item} = req.body ;
-     User.findByIdAndUpdate({user},{$pop:{favourites:item}},
-        (err,result)=>{
-            if(err) res.status(200).json(err) ;
-            else res.status(200).json("Item Removed from your favourites") ;
-        })
+    let u = await User.findById(user) ;
+    u.favourites.filter(id=> id != item) ;
+    await u.save() ;
+    res.status(200).json("Item Removed from your favourites") ;
 }
 
-const movefromfavouritetocart = (req,res)=>{
+const movefromfavouritetocart = async(req,res)=>{
     const {user,item} = req.body ;
-    User.findByIdAndUpdate({user},{$pop:{favourites:item},$push: {cart: item}},
-        (err,result)=>{
-            if(err) res.status(200).json(err) ;
-            else res.status(200).json("Item moved from favourites to cart") ;
-        }) 
+    let u = await User.findById(user) ;
+    u.favourites.filter(id=> id != item) ;
+    await u.save() ;
+    res.status(200).json("Item moved from favourites to cart") ;
+    
 }
 const movefromcarttofavourites = (req,res)=>{
     const {user,item} = req.body ;
@@ -104,6 +101,46 @@ const movefromcarttofavourites = (req,res)=>{
             if(err) res.status(200).json(err) ;
             else res.status(200).json("Item moved from cart to favourites") ;
         }) ;
+}
+
+const cancel_order  = async (req,res)=>{
+    const {user,product,size,order_id,reason} = req.body ;
+    //const u = await User.findById({_id:pet}) ;
+    const o = await Orders.findById({_id:order_id}) ;
+    const c = await Cancel.find({
+     user:user ,
+     product:product ,
+     size : size ,
+     reason : reason ,
+     order : order_id
+    })
+    if(c.length() == 0) res.status(200).json("Cancel request already placed , will be reviewed soon by us") ;
+    /*
+    o.product.forEach(p=>{
+        if(p.product == size && p.status == "Delivered") res.status(200).json("Product already delivered !!!") ;
+    }) */
+    new Cancel({
+        size:size,
+        product:product,
+        user:user
+    }).save(async(err,result)=>{
+        if(err) res.status(400).json(err) ;
+        else{
+            res.status(200).json("Placed Request for Cancellation Succesfully") ;
+        } 
+    })
+
+}
+
+const vieworders = async(req,res)=>{
+    const {orders} = req.body ;
+    const o = await Orders.find({ '_id': { $in: orders } }) ;
+    res.status(200).json(o) ;
+}
+const viewcancelledorders = async(req,res)=>{
+    const {orders} = req.body ;
+    const o = await Orders.find({ '_id': { $in: orders } }) ;
+    res.status(200).json(o) ;
 }
 module.exports = {
     getproduct ,
@@ -116,5 +153,9 @@ module.exports = {
     removefavourites ,
     remove_cart ,
     movefromfavouritetocart,
-    movefromcarttofavourites
+    movefromcarttofavourites,
+    cancel_order,
+    getpdtbyid ,
+    vieworders ,
+    viewcancelledorders
 }

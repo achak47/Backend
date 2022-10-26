@@ -105,10 +105,30 @@ const registeremail = (req,res)=>{
    }) ;
 }
 
-
+const checkuser = async(req,res)=>{
+  const {email,name} = req.body ;
+  console.log(email,name)
+  const user = await Users.findOne({'email':email}) ;
+  if(!user){
+    new Users({
+      name,
+      email,
+      password:"",
+      phone:""
+    }).save((err,result)=>{
+      if(err){
+        console.log(err);
+        return;
+   }
+  res.status(200).json("Signed Up Succesfully !!!") ;
+    }) ;
+  }
+  else req.status(200).json(user) ;
+}
 module.exports = {
     register,
     login,
     getuser,
-    registeremail
+    registeremail,
+    checkuser
 }

@@ -1,6 +1,8 @@
 const mongoose = require('mongoose') ;
 const ConversationSchema = new mongoose.Schema({
-   members:[String] ,
+   members:[
+      {type:mongoose.Schema.Types.ObjectId,
+      ref:'Users'}] ,
    pet:{
       type:mongoose.Schema.Types.ObjectId,
       ref:'Adoptions'

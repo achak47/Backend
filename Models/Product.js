@@ -14,7 +14,7 @@ const schema = new mongoose.Schema({
     desc: String ,
     ingredients: String ,
     analysis: String , 
-    image: String ,
+    image: [String] ,
     rating : mongoose.Schema.Types.Decimal128 ,
     details : [String] ,
     sizes :[{

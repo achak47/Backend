@@ -25,6 +25,9 @@ router.post("/addproduct",Middleware.checkAdmin,(req,res)=>{
 router.post("/addsize",Middleware.checkAdmin,(req,res)=>{
     Addproduct.addsize(req,res) ;
 })
+router.get("/addproductfromsheet",(req,res)=>{
+    Addproduct.addbysheet(req,res) ;
+})
 
 
 //getting 

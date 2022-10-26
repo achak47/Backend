@@ -4,6 +4,7 @@ const schema = new mongoose.Schema({
     size: String ,
     specefication: String ,
     image : String ,
+    image_listing : String ,
     quantity:Number ,
     product :{
         type:mongoose.Schema.Types.ObjectId,

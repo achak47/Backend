@@ -29,12 +29,23 @@ router.post('/register', (req,res)=>{
     Authentication.register(req,res,bcrypt,jwt);
 });
 
+//auth
+router.post('/checkuser',(req,res)=>{
+    Authentication.checkuser(req,res); 
+})
+
 //For adoption
 router.post('/post/adoptions',(req,res)=>{
-    Adoption.addpet(req,res) ;
+    Adoption.addadoption(req,res) ;
 }) ;
 router.get('/get/adoptions',(req,res)=>{
     Adoption.getpet(req,res) ;
+}) ;
+router.post('/add/pets',(req,res)=>{
+    Adoption.addpet(req,res) ;
+}) ;
+router.post('/moveforadoption',(req,res)=>{
+    Adoption.movepet(req,res) ;
 }) ;
 //For getting the email of pre users
 router.post('/registeremail',(req,res)=>{
@@ -64,7 +75,7 @@ router.get("/find/:firstuserId/:seconduserId",async(req,res)=>{
 router.post("/add/messages",async(req,res)=>{
     message.addmessages(req,res) ;
 }) ;  //add messages
-router.get("messages/:conversationId",async(req,res)=>{
+router.get("/messages/:conversationId",async(req,res)=>{
     message.getmessages(req,res) ;
 }) ; //get messages
 
@@ -93,6 +104,9 @@ router.post('/filter/products',(req,res)=>{
 //ecommerce
 router.get('/ecom/getproducts',(req,res)=>{
     ecomm.getproduct(req,res) ;
+}) ;
+router.post('/ecom/getproductbyid',(req,res)=>{
+    ecomm.getpdtbyid(req,res) ;
 }) ;
 router.post('/ecom/filladdress',(req,res)=>{
     ecomm.set_address(req,res) ;
@@ -124,7 +138,12 @@ router.post('/ecom/move/favouritetocart',(req,res)=>{
 router.post('/ecom/move/carttofavourite',(req,res)=>{
     ecomm.movefromcarttofavourites(req,res) ;
 })
-
+router.post('/ecom/vieworders',(req,res)=>{
+    ecomm.vieworders(req,res) ;
+})
+router.post('/ecom/viewcancelledorders',(req,res)=>{
+    ecomm.viewcancelledorders(req,res) ;
+})
 //payments
 router.post('/ecom/onpayment',(req,res)=>{
    payment.pay_order(req,res) ;

@@ -24,6 +24,18 @@ const schema = new mongoose.Schema({
         cart:[{
             type:mongoose.Schema.Types.ObjectId,
             ref:'Size'  
+        }] ,
+        orders:[{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Size'
+        }],
+        shipped_orders:[{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Size'
+        }],
+        cancelled_orders:[{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Size'
         }]
     },{
         timestamps:true

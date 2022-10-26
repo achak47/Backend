@@ -1,5 +1,6 @@
 const Adoptions = require("../../Models/Adoptions");
-const addpet = (req,res)=>{
+const Pets = require("../../Models/Pets");
+const addadoption = (req,res)=>{
   const {name,type,gender,age,colour,breed,primary_breed,allergies,diseases,disabilities,location,picture,user_id} = req.body ;
   //if(!name || !desc || !location || !picture || !user_id) res.status(400).json("Invalid Credentials") ;
   new Adoptions({
@@ -57,8 +58,43 @@ const getpet = (req,res)=>{
     }) */
     //var retpets = await modifypets(pets) ;
 }
+const addpet = (req,res)=>{
+  const {name,type,gender,age,colour,breed,primary_breed,allergies,diseases,disabilities,location,picture,user_id} = req.body ;
+  //if(!name || !desc || !location || !picture || !user_id) res.status(400).json("Invalid Credentials") ;
+  new Pets({
+    name,
+    type,
+    gender,
+    age,
+    colour,
+    breed,
+    primary_breed,
+    allergies,
+    diseases,
+    disabilities,
+    location,
+    picture,
+    user:user_id 
+  }).save((err,result)=>{
+    if(err) res.status(400).json(err) ;
+    res.status(200).json("Your Pet is added succesfully !!!") ;
+      }) ;
+}
 
+const movepet = async(req,res)=>{
+  const {pet} = req.body ;
+  const p = await Pets.findById({_id:pet}) ;
+  const adop = new Adoptions(p) ;
+  await adop.save() ;
+  Pets.deleteOne({_id:pet}).then(function(){
+    console.log("Pet moved to adoption Succesfully !!!"); // Success
+ }).catch(function(error){
+    console.log(error); // Failure
+ });
+}
 module.exports = {
-    addpet,
-    getpet
+    addadoption,
+    getpet , 
+    addpet , 
+    movepet
 }

@@ -5,7 +5,6 @@ const schema = ({
   line1 : String ,
   line2 : String ,
   landmark : String ,
-  area : String , 
   phone: String ,
   user : {
     type:mongoose.Schema.Types.ObjectId,
