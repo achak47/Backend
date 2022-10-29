@@ -22,9 +22,11 @@ const schema = new mongoose.Schema({
             ref:'Address'  
         }],
         cart:[{
+            item:{
             type:mongoose.Schema.Types.ObjectId,
             ref:'Size'  
-        }] ,
+        },
+        quantity:Number}] ,
         orders:[{
             type:mongoose.Schema.Types.ObjectId,
             ref:'Size'

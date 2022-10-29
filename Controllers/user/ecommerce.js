@@ -18,13 +18,14 @@ const getpdtbyid = async(req,res)=>{
     res.status(200).json(pdt) ;
 }
 const set_address = async(req,res) =>{
-    const {city,pin,line1,line2,user} = req.body ;
+    const {city,pin,line1,line2,user,landmark} = req.body ;
     const users = await User.findById(user) ;
     new Address({
         city,
         pin,
         line1,
         line2,
+        landmark,
         phone : users.phone ,
         user
     }).save(async(err,result)=>{
@@ -36,6 +37,11 @@ const set_address = async(req,res) =>{
         } 
     })
 }
+const get_address = async(req,res) =>{
+    const {user} = req.body ;
+    const a = await User.findById(user).populate({path:'address'}) ;
+    res.status(200).json(a.address) ;
+}
 const quantity_check = async(req,res)=>{
    const {item,quantity} = req.body ;
    const result = await Size.findById(item)
@@ -46,17 +52,24 @@ const quantity_check = async(req,res)=>{
 }
 
 const add_tocart = async(req,res)=>{
-    const {user,item} = req.body ;
+    const {user,item,quantity} = req.body ;
     const users = await User.findByIdAndUpdate(user) ;
-    users.cart.push(item) ;
+    users.cart.push({item,quantity}) ;
     await users.save() ;
     res.status(200).json("Item Added to your favourites") ;
 }
 
 const view_cart = async(req,res)=>{
     const {cart} = req.body ;
-    let pdts = await Size.find({ '_id': { $in: cart } }) ;
+    let pdts = await Size.find({ '_id': { $in: cart } }).populate({path:'product',select:'name image flavours'}) ;
     return res.status(200).json(pdts) ;
+}
+
+const view_cart2 = async(req,res)=>{
+    const {user} = req.body ;
+    let pdts = await User.findById(user)
+    .populate({path:'cart.item',populate:[{path:'product',select:'name image flavours'}]})
+    return res.status(200).json(pdts.cart) ;
 }
 
 const remove_cart = async(req,res)=>{
@@ -67,6 +80,15 @@ const remove_cart = async(req,res)=>{
     res.status(200).json("Item Removed from your cart") ;
 }
 
+const update_quantity = async(req,res)=>{
+    const {user,item,quantity} = req.body ;
+    let u = await User.findById(user) ;
+    u.cart.forEach(e => {
+        if(e.item == item) e.quantity = quantity ;
+    });
+    await u.save() ;
+    res.status(200).json("Quantity upgraded") ;
+}
 const addfavourites = async(req,res)=>{
     const {user,item} = req.body ;
     let u = await User.findById(user) ;
@@ -103,6 +125,23 @@ const movefromcarttofavourites = (req,res)=>{
         }) ;
 }
 
+const addorder = (req,res)=>{
+    const {user,product,amount,quantity,status,isPaid,address} = req.body ;
+    new Orders({
+        user,
+        product,
+        amount,
+        quantity,
+        status,
+        isPaid,
+        address
+    }).save((err,result)=>{
+        if(err) res.status(400).json(err) ;
+        else{
+            res.status(200).json("Order Placed Succesfully !!!") ;
+        }
+    })
+}
 const cancel_order  = async (req,res)=>{
     const {user,product,size,order_id,reason} = req.body ;
     //const u = await User.findById({_id:pet}) ;
@@ -142,11 +181,13 @@ const viewcancelledorders = async(req,res)=>{
     const o = await Orders.find({ '_id': { $in: orders } }) ;
     res.status(200).json(o) ;
 }
+
 module.exports = {
     getproduct ,
     set_address ,
     add_tocart ,
     view_cart ,
+    view_cart2 ,
     quantity_check ,
     addfavourites ,
     viewfavourites ,
@@ -157,5 +198,8 @@ module.exports = {
     cancel_order,
     getpdtbyid ,
     vieworders ,
-    viewcancelledorders
+    viewcancelledorders ,
+    update_quantity,
+    get_address ,
+    addorder
 }

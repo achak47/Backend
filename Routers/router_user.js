@@ -111,11 +111,14 @@ router.post('/ecom/getproductbyid',(req,res)=>{
 router.post('/ecom/filladdress',(req,res)=>{
     ecomm.set_address(req,res) ;
 }) ;
+router.post('/ecom/getaddress',(req,res)=>{
+    ecomm.get_address(req,res) ;
+}) ;
 router.post('/ecom/addtocart',(req,res)=>{
     ecomm.add_tocart(req,res) ;
 })
 router.post('/ecom/viewcart',(req,res)=>{
-    ecomm.view_cart(req,res) ;
+    ecomm.view_cart2(req,res) ;
 })
 router.post('/ecom/quantitycheck',(req,res)=>{
     ecomm.quantity_check(req,res) ;
@@ -132,11 +135,17 @@ router.post('/ecom/removecart',(req,res)=>{
 router.post('/ecom/removefavourite',(req,res)=>{
     ecomm.removefavourites(req,res) ;
 })
+router.post('/ecom/updatecart',(req,res)=>{
+    ecomm.update_quantity(req,res) ;
+})
 router.post('/ecom/move/favouritetocart',(req,res)=>{
     ecomm.movefromfavouritetocart(req,res) ;
 })
 router.post('/ecom/move/carttofavourite',(req,res)=>{
     ecomm.movefromcarttofavourites(req,res) ;
+})
+router.post('/ecom/placeorder',(req,res)=>{
+    ecomm.addorder(req,res) ;
 })
 router.post('/ecom/vieworders',(req,res)=>{
     ecomm.vieworders(req,res) ;
