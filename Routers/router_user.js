@@ -154,7 +154,13 @@ router.post('/ecom/viewcancelledorders',(req,res)=>{
     ecomm.viewcancelledorders(req,res) ;
 })
 //payments
-router.post('/ecom/onpayment',(req,res)=>{
+router.post('/pay-order',(req,res)=>{
    payment.pay_order(req,res) ;
 })
+router.get('/get-razorpay-key', (req, res) => {
+    res.send({ key: process.env.RAZORPAY_KEY_ID });
+  });
+router.post('/create-order', async (req, res) => {
+    payment.create_order(req,res) ;
+  }) ;
 module.exports=router;

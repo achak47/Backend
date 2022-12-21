@@ -24,6 +24,7 @@ const create_order = async(req,res)=>{
 }
 }
 
+//when payment is succesful
 const pay_order = async(req,res)=>{
   try {
     const { amount, razorpayPaymentId, razorpayOrderId, razorpaySignature,product,user,address } = req.body;
