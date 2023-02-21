@@ -1,6 +1,6 @@
 const Users = require("../../Models/User");
 const Email = require("../../Models/emailuser");
-CLIENT_URL="https://lottle-api.herokuapp.com";
+CLIENT_URL="https://wild-plum-bunny-tam.cyclic.app";
 const nodemailer = require('nodemailer');
 
 const register = async(req,res,bcrypt,jwt)=>{
