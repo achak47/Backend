@@ -1,0 +1,32 @@
+Authentication :-
+
+link :  https://wild-plum-bunny-tam.cyclic.app/register 
+body : email , name , password
+For registering 
+
+
+link : https://wild-plum-bunny-tam.cyclic.app/login
+body : email,password
+For logging in 
+
+link : https://wild-plum-bunny-tam.cyclic.app/checkuser
+body : email,name
+was made for google authentication , it adds a user if the user does not exists , this api should be used if someone
+signs in with google 
+
+link : https://wild-plum-bunny-tam.cyclic.app/post/adoptions
+body : name,type,gender,age,colour,breed,primary_breed,allergies,diseases,disabilities,location,picture,user_id
+For posting adoptions , the user id must be taken from the account , better to store it when user logs in 
+image1 , image2 ... these should be urls , post images in cloudinary or other clouds and get the urls
+
+link : https://wild-plum-bunny-tam.cyclic.app/get/adoptions
+This is a get request
+For fetching all the pets in the adoptions lifestage
+
+link : https://wild-plum-bunny-tam.cyclic.app/add/pets
+body : name,type,gender,age,colour,breed,primary_breed,allergies,diseases,disabilities,location,picture,user_id
+For adding a pet
+
+link : https://wild-plum-bunny-tam.cyclic.app/moveforadoption
+body : pet
+The pet contains the pet id , this should be taken out from the 
