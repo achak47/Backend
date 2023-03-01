@@ -62,10 +62,10 @@ const login = (req,res,bcrypt,jwt)=>{
           const token = jwt.sign ({name, email, password}, api_key, {expiresIn : '60m'});
           res.status(200).json({token}) ;
         }
-        else res.status(400).json("Wrong Password") ;
+        else res.status(400).json(1) ;
       }
       else{
-        return res.status(200).json('No such user exists , Pls register !') ;
+        return res.status(200).json(2) ;
       }
     })
 }
@@ -82,9 +82,11 @@ const getuser = (req,res,jwt,bcrypt)=>{
           new Users({
             name,
             email,
-            password:hash
+            password:hash,
+            phone:email
           }).save((err,result)=>{
         res.status(200).json(decodedToken) ;
+        console.log(err)
           }) ;
         }
       })
