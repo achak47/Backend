@@ -2,14 +2,13 @@ const Product = require("../../Models/Product");
 const Size = require("../../Models/Size");
 const axios = require("axios");
 
-const addproduct = (req,res)=>{
-    const {name,desc,brand,ingredients,image1,image2,image3,image4,analysis,rating,animal_type,foodform,breedsize,specialneeds,lifestage,flavours,details} = req.body ;
+const addproduct = async(req,res)=>{
+    const {name,desc,brand,ingredients,rating,animal_type,foodform,breedsize,specialneeds,lifestage,flavours,details,manufacture_addr,pack_addr} = req.body ;
     new Product({
      name ,
      desc , 
      brand ,
      ingredients ,
-     analysis ,
      rating ,
      animal_type,
      foodform,
@@ -18,34 +17,43 @@ const addproduct = (req,res)=>{
      lifestage,
      flavours,
      details,
-     image:[image1,image2,image3,image4]
+     manufacture_addr,
+     pack_addr
     }).save((err,result)=>{
-        if(err) res.status(400).json({"err":err , "msg":"A product with same name already exists"}) ;
+        if(err) res.status(400).json({"err":err , "msg":"An error occured"}) ;
         else res.status(200).json("Product added succesfully !!!") ; 
     })
 }
 
 const addsize = async(req,res)=>{
-    const {price,size,specefication,product,image,qty,image_listing} = req.body ;
+    const {price,size,specification,product,image,quantity,weight,mrp} = req.body ;
     const pdt = await Product.findOne({name:product}) ;
     console.log(pdt)
     s  = await Size.create({
         "price":price ,
         "size":size ,
-        "specefication":specefication ,
+        "tags":specification ,
         "image":image ,
         "product":pdt._id,
-        "quantity":qty ,
-        "image_listing":image_listing
+        "quantity":quantity,
+        "weight":weight,
+        "mrp":mrp
     })
         //if(err) res.status(400).json(err) ;
         console.log(s)
         pdt.sizes.push(s._id) ;
         pdt.save((err,result)=>{
+            console.log(err)
             res.status(200).json("Size of Product added succesfully") ;
         })
 }
 
+const checkproduct = async(req,res)=>{
+    const {name} = req.body ;
+    const p = Product.find({name:name}) ;
+    if(p.length>0) return res.status(200).json(1) ;
+    res.status(200).json(0) ;
+}
 const addbysheet = async(req,res)=>{
     const pdts = await axios.get("https://script.google.com/macros/s/AKfycbxnjVHEEr-pE0Aoh4cdOgTNup7YlKJ7b04IWHLQ0zjPtGqh50mS6ZypbhAKoA3uN5l5/exec") ;
     //console.log(pdts.data.data) ;
@@ -102,5 +110,6 @@ module.exports = {
     addproduct ,
     addsize ,
     addbysheet ,
-    updatefromsheet
+    updatefromsheet ,
+    checkproduct
 }

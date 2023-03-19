@@ -62,10 +62,10 @@ const login = (req,res,bcrypt,jwt)=>{
           const token = jwt.sign ({name, email, password}, api_key, {expiresIn : '60m'});
           res.status(200).json({token}) ;
         }
-        else res.status(400).json(1) ;
+        else res.status(400).json(1) ; // wrong password
       }
       else{
-        return res.status(200).json(2) ;
+        return res.status(200).json(2) ; // wrong email(user does not exist)
       }
     })
 }
@@ -127,10 +127,29 @@ const checkuser = async(req,res)=>{
   }
   else req.status(200).json(user) ;
 }
+const check_phone = async(req,res)=>{
+    const {phone} = req.body ;
+    const user = await Users.findOne({'phone':phone}) ;
+    if(user){
+      res.status(200).json(0) // A user with same number already exists
+    } 
+    else res.status(200).json(1) // Unique mobile number
+}
+const phone_auth = async(req,res)=>{
+  const {email,phone} = req.body ;
+  const user = await Users.findOne({'email':email}) ;
+  if(user){
+    user.phone = phone ;
+    await user.save() ;
+    return res.status(200).json("Phone Number added successfully !!!") ;
+  }
+  res.status(200).json("No such user found")
+}
 module.exports = {
     register,
     login,
     getuser,
     registeremail,
-    checkuser
+    checkuser,
+    phone_auth
 }

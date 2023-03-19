@@ -33,6 +33,9 @@ router.post('/register', (req,res)=>{
 router.post('/checkuser',(req,res)=>{
     Authentication.checkuser(req,res); 
 })
+router.post('/phoneauth',(req,res)=>{
+    Authentication.phone_auth(req,res); 
+})
 
 //For adoption
 router.post('/post/adoptions',(req,res)=>{

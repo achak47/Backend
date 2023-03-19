@@ -2,9 +2,10 @@ const mongoose = require('mongoose') ;
 const schema = new mongoose.Schema({
     price: Number,
     size: String ,
-    specefication: String ,
-    image : String ,
-    image_listing : String ,
+    tags: String ,
+    image : [String] ,
+    weight:Number,
+    mrp:Number,
     quantity:Number ,
     product :{
         type:mongoose.Schema.Types.ObjectId,

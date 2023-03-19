@@ -1,9 +1,6 @@
 const mongoose = require('mongoose') ;
 const schema = new mongoose.Schema({
-    name: {
-        type:String ,
-        unique:true
-    },
+    name: String,
     brand : String ,
     animal_type :[String] ,
     foodform : String ,
@@ -13,10 +10,11 @@ const schema = new mongoose.Schema({
     flavours: String ,
     desc: String ,
     ingredients: String ,
-    analysis: String , 
     image: [String] ,
     rating : mongoose.Schema.Types.Decimal128 ,
     details : [String] ,
+    manufacture_addr: String ,
+    pack_addr: String ,
     sizes :[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Size'
