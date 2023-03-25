@@ -116,16 +116,20 @@ const checkuser = async(req,res)=>{
       name,
       email,
       password:"",
-      phone:""
+      phone:email
     }).save((err,result)=>{
       if(err){
         console.log(err);
-        return;
+        return res.status(500).json(err)
    }
-  res.status(200).json("Signed Up Succesfully !!!") ;
+   result.phone = ""
+   return res.status(200).json(result) ;
     }) ;
   }
-  else req.status(200).json(user) ;
+  else{
+    if(user.phone.includes("@"))user.phone = ""
+    res.status(200).json(user) ;
+  }
 }
 const check_phone = async(req,res)=>{
     const {phone} = req.body ;
