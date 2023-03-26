@@ -30,8 +30,14 @@ router.post('/register', (req,res)=>{
 });
 
 //auth
-router.post('/checkuser',(req,res)=>{
-    Authentication.checkuser(req,res); 
+router.post('/social-signup',(req,res)=>{
+    Authentication.social_signup(req,res); 
+})
+router.post('/social-signin',(req,res)=>{
+    Authentication.social_signin(req,res); 
+})
+router.post('/check-phone',(req,res)=>{
+    Authentication.check_phone(req,res); 
 })
 router.post('/phoneauth',(req,res)=>{
     Authentication.phone_auth(req,res); 

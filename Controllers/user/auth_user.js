@@ -107,7 +107,7 @@ const registeremail = (req,res)=>{
    }) ;
 }
 
-const checkuser = async(req,res)=>{
+const social_signup = async(req,res)=>{
   const {email,name} = req.body ;
   console.log(email,name)
   const user = await Users.findOne({'email':email}) ;
@@ -131,6 +131,20 @@ const checkuser = async(req,res)=>{
     res.status(200).json(user) ;
   }
 }
+
+const social_signin = async(req,res)=>{
+  const {email,name} = req.body ;
+  console.log(email,name)
+  const user = await Users.findOne({'email':email}) ;
+  if(!user){
+    res.status(200).json("No such user exists pls sign up")
+  }
+  else{
+    if(user.phone.includes("@"))user.phone = ""
+    res.status(200).json(user) ;
+  }
+}
+
 const check_phone = async(req,res)=>{
     const {phone} = req.body ;
     const user = await Users.findOne({'phone':phone}) ;
@@ -154,6 +168,8 @@ module.exports = {
     login,
     getuser,
     registeremail,
-    checkuser,
-    phone_auth
+    social_signup,
+    social_signin,
+    phone_auth,
+    check_phone
 }
